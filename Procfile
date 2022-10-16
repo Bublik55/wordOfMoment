@@ -1,2 +1,2 @@
-web: gunicorn manage:app
+web: gunicorn home:app
 ps:scale web=1
