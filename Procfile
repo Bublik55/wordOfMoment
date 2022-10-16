@@ -1,2 +1,2 @@
-web: gunicorn python manage.py runserver
+web: gunicorn manage:app
 ps:scale web=1
