@@ -1,1 +1,2 @@
-web: gunicorn wsgi:app
+web: gunicorn main:app
+ps:scale web=1
