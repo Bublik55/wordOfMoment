@@ -21,8 +21,8 @@ def word_list(request):
         serializer = WordSerializer(word,many = True)
         return Response(serializer.data, status = status.HTTP_201_CREATED)
     elif request.method == 'POST':
-        serializer = WordSerializer(data = request.data)
-        if serializer.isvalid():
+        serializer = WordSerializer(data = request.data)      
+        if (serializer.is_valid()):
             serializer.save()
             return Response(serializer.data, status = status.HTTP_201_CREATED)
 
@@ -31,7 +31,7 @@ def word_list(request):
 @api_view(['GET'])
 def word_stubs(request,pk):
     """
-    Stubbed View to top 100 notmalized words
+    Stubbed View to top 100 normalized words
     * Public
     """
     if request.method == 'GET':

@@ -1,2 +1,2 @@
 # wordOfMoment
-this if an back of home project
+this is an back of home project

@@ -29,6 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['word-of-moment.herokuapp.com','0.0.0.0',  '127.0.0.1']
 
+STATICFILES_STORAGE = 'wordOfMoment.staticfiles'
 
 # Application definition
 
@@ -75,7 +76,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'home.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 
 # Database

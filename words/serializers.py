@@ -15,12 +15,9 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'name']
 
 class WordSerializer(serializers.HyperlinkedModelSerializer):
-  model = Word
-  fields = ['owner_id', 'content', 'count']
-  owner_id = serializers.IntegerField(read_only = True)
-  content = serializers.CharField()
-  count = serializers.IntegerField(read_only = False)
-
+  class Meta:
+    model = Word
+    fields = ['owner_id', 'content', 'count']
   def create(self, validated_data):
         """
         Create and return a new `Word` instance, given the validated data.
