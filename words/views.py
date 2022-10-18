@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User, Group
 from requests import Response
+
+from .tools import to_normal_form
 from .serializers import WordSerializer
 from rest_framework import status
 from rest_framework.decorators import api_view, schema
@@ -21,12 +23,13 @@ def word_list(request):
         serializer = WordSerializer(word,many = True)
         return Response(serializer.data, status = status.HTTP_201_CREATED)
     elif request.method == 'POST':
-        serializer = WordSerializer(data = request.data)      
+        request.data['content'] = to_normal_form(request.data['content'])
+        serializer = WordSerializer(data = request.data)
         if (serializer.is_valid()):
             serializer.save()
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         else:
-            word = Word.objects.get(content=serializer.data["content"])
+            word = Word.objects.get(content=to_normal_form(serializer.data["content"]))
             word.count += 1
             word.save()
             serializer = WordSerializer(word)
