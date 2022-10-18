@@ -25,6 +25,12 @@ def word_list(request):
         if (serializer.is_valid()):
             serializer.save()
             return Response(serializer.data, status = status.HTTP_201_CREATED)
+        else:
+            word = Word.objects.get(content=serializer.data["content"])
+            word.count += 1
+            word.save()
+            serializer = WordSerializer(word)
+            return Response(serializer.data, status= status.HTTP_409_CONFLICT)
 
 
 @csrf_exempt
