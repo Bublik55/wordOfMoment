@@ -21,15 +21,15 @@ def word_list(request):
     if request.method == 'GET':
         word = Word.objects.all()
         serializer = WordSerializer(word,many = True)
-        return Response(serializer.data, status = status.HTTP_201_CREATED)
+        return Response(serializer.data, status = status.HTTP_200_OK)
     elif request.method == 'POST':
-        request.data['content'] = to_normal_form(request.data['content'])
+        normalForm = to_normal_form(request.data.get('content'))
         serializer = WordSerializer(data = request.data)
         if (serializer.is_valid()):
             serializer.save()
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         else:
-            word = Word.objects.get(content=to_normal_form(serializer.data["content"]))
+            word = Word.objects.get(content=normalForm)
             word.count += 1
             word.save()
             serializer = WordSerializer(word)
