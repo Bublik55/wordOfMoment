@@ -6,7 +6,7 @@ from django.db import models
 
 class Word(models.Model):
     owner_id = models.BigIntegerField(default=0)
-    content = models.CharField(max_length=30, default="empty", unique = True)
+    content = models.CharField(max_length=30, default="", unique = True)
     count = models.BigIntegerField(default=0)
 
     def __str__(self) -> str:

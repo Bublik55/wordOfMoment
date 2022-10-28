@@ -18,15 +18,26 @@ from .stubs import list_stub, normalize_dict
 @csrf_exempt
 @api_view(['GET','POST','DELETE'])
 def word_list(request):
+    """
+    GET - get all worlds without dto
+    POST - post a word to DB
+    DELETE - delete all words from db
+    * Public
+    """
     if request.method == 'GET':
         word = Word.objects.all()
         serializer = WordSerializer(word,many = True)
         return Response(serializer.data, status = status.HTTP_200_OK)
     elif request.method == 'POST':
         normalForm = to_normal_form(request.data.get('content'))
+        try:
+            word = Word.objects.get(content=normalForm)
+        except:
+            word = ""
+
         serializer = WordSerializer(data = request.data)
-        word = Word.objects.get(content=normalForm)
-        if (serializer.is_valid() & (word.content != None)):
+        if (serializer.is_valid() & (word == "")):
+            
             serializer.save()
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         else:
