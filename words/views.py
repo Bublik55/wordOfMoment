@@ -16,7 +16,7 @@ from .stubs import list_stub, normalize_dict
 
 
 @csrf_exempt
-@api_view(['GET','POST'])
+@api_view(['GET','POST','DELETE'])
 def word_list(request):
     if request.method == 'GET':
         word = Word.objects.all()
@@ -25,7 +25,8 @@ def word_list(request):
     elif request.method == 'POST':
         normalForm = to_normal_form(request.data.get('content'))
         serializer = WordSerializer(data = request.data)
-        if (serializer.is_valid()):
+        word = Word.objects.get(content=normalForm)
+        if (serializer.is_valid() & (word.content != None)):
             serializer.save()
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         else:
@@ -33,8 +34,11 @@ def word_list(request):
             word.count += 1
             word.save()
             serializer = WordSerializer(word)
-            return Response(serializer.data, status= status.HTTP_409_CONFLICT)
-
+            return Response(serializer.data, status= status.HTTP_200_OK)
+    elif request.method == "DELETE":
+        res = Word.objects.all()
+        res.delete()
+        return Response(res,status= status.HTTP_200_OK)
 
 @csrf_exempt
 @api_view(['GET'])
